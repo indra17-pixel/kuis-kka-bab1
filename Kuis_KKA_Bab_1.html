@@ -178,6 +178,62 @@
   .status-line.ok{color:var(--teal-dark);}
   .status-line.fail{color:var(--brick);}
   .hidden{display:none !important;}
+  /* ---- Leaderboard ---- */
+  .board{
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:16px;
+  }
+  .board h2{
+    font-size:14px;
+    margin:0 0 4px;
+    font-weight:700;
+  }
+  .board .board-sub{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .board-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 0;
+    border-top:1px solid var(--line);
+    font-size:14px;
+  }
+  .board-row:first-of-type{border-top:none;}
+  .board-rank{
+    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-weight:700;
+    font-size:13px;
+    width:26px; height:26px;
+    border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(47,111,94,0.12);
+    color:var(--teal-dark);
+    flex-shrink:0;
+  }
+  .board-row:nth-child(1) .board-rank{background:var(--gold); color:#3a2e05;}
+  .board-row:nth-child(2) .board-rank{background:#D9D4C4; color:var(--ink);}
+  .board-row:nth-child(3) .board-rank{background:#DCB98C; color:#4a2f10;}
+  .board-name{flex:1; min-width:0;}
+  .board-name .n{font-weight:600; display:block;}
+  .board-name .k{font-size:12px; color:var(--ink-soft);}
+  .board-score{
+    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-weight:700;
+    font-size:15px;
+    color:var(--teal-dark);
+    flex-shrink:0;
+  }
+  .board-empty{
+    font-size:13px;
+    color:var(--ink-soft);
+    padding:6px 0;
+  }
   footer{
     text-align:center;
     font-size:12px;
@@ -192,6 +248,15 @@
   <div class="masthead">
     <h1>Kuis KKA</h1>
     <span class="tag">Bab 1 · Pengelolaan Data</span>
+  </div>
+
+  <!-- PAPAN RANKING -->
+  <div class="board" id="board">
+    <h2>Papan nilai</h2>
+    <p class="board-sub">Peringkat siswa yang sudah mengerjakan, dari skor tertinggi.</p>
+    <div id="board-body">
+      <p class="board-empty">Memuat data...</p>
+    </div>
   </div>
 
   <!-- SCREEN 1: identitas -->
@@ -292,6 +357,42 @@ const QUESTIONS = [
 let student = {nama:"", kelas:""};
 let current = 0;
 let answers = new Array(QUESTIONS.length).fill(null);
+
+/* ---- Papan ranking ---- */
+function loadLeaderboard(){
+  const body = document.getElementById('board-body');
+
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('PASTE_URL') !== -1){
+    body.innerHTML = '<p class="board-empty">Papan nilai belum aktif (URL backend belum diisi).</p>';
+    return;
+  }
+
+  fetch(SCRIPT_URL, { method: 'GET' })
+    .then(res => res.json())
+    .then(records => {
+      if(!Array.isArray(records) || records.length === 0){
+        body.innerHTML = '<p class="board-empty">Belum ada siswa yang mengerjakan.</p>';
+        return;
+      }
+      records.sort((a, b) => (b.skor - a.skor) || ((b.benar||0) - (a.benar||0)));
+      body.innerHTML = '';
+      records.forEach((r, i) => {
+        const row = document.createElement('div');
+        row.className = 'board-row';
+        row.innerHTML =
+          '<div class="board-rank">' + (i+1) + '</div>' +
+          '<div class="board-name"><span class="n"></span><span class="k"></span></div>' +
+          '<div class="board-score">' + r.skor + '</div>';
+        row.querySelector('.n').textContent = r.nama;
+        row.querySelector('.k').textContent = r.kelas || '';
+        body.appendChild(row);
+      });
+    })
+    .catch(() => {
+      body.innerHTML = '<p class="board-empty">Papan nilai tidak dapat dimuat saat ini.</p>';
+    });
+}
+loadLeaderboard();
 
 const screenIntro = document.getElementById('screen-intro');
 const screenQuiz = document.getElementById('screen-quiz');
@@ -410,6 +511,7 @@ function sendResult(payload){
   }).then(() => {
     statusEl.textContent = 'Hasil berhasil dikirim. Kamu boleh menutup halaman ini.';
     statusEl.className = 'status-line ok';
+    setTimeout(loadLeaderboard, 1500);
   }).catch(() => {
     statusEl.textContent = 'Gagal mengirim hasil. Periksa koneksi internet, lalu coba muat ulang dan kerjakan kembali, atau laporkan skor ke guru secara manual.';
     statusEl.className = 'status-line fail';
