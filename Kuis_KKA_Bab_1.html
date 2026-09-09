@@ -12,10 +12,13 @@
     --line:#D8D4C8;
     --teal:#2F6F5E;
     --teal-dark:#1F4C40;
+    --teal-tint:rgba(47,111,94,0.09);
     --gold:#C9A227;
+    --gold-tint:rgba(201,162,39,0.14);
     --brick:#B4423F;
+    --brick-tint:rgba(180,66,63,0.09);
     --card:#FFFFFF;
-    --radius:10px;
+    --radius:12px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -34,7 +37,7 @@
     padding:32px 16px 64px;
     line-height:1.5;
   }
-  .wrap{width:100%;max-width:620px;}
+  .wrap{width:100%;max-width:640px;}
   .masthead{
     display:flex;
     align-items:baseline;
@@ -43,178 +46,52 @@
     padding-bottom:14px;
     border-bottom:2px solid var(--ink);
   }
-  .masthead h1{
-    font-size:19px;
-    margin:0;
-    font-weight:700;
-    letter-spacing:-0.01em;
-  }
+  .masthead h1{font-size:19px;margin:0;font-weight:700;letter-spacing:-0.01em;}
   .masthead .tag{
     font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size:12px;
-    color:var(--teal-dark);
-    background:rgba(47,111,94,0.1);
-    padding:3px 8px;
-    border-radius:4px;
-    white-space:nowrap;
+    font-size:12px;color:var(--teal-dark);
+    background:var(--teal-tint);padding:3px 8px;border-radius:4px;white-space:nowrap;
   }
   .card{
     background:var(--card);
     border:1.5px solid var(--ink);
     border-radius:var(--radius);
     padding:28px 26px;
+    box-shadow:4px 4px 0 rgba(23,38,43,0.06);
   }
-  /* ---- Intro / identity form ---- */
+  @keyframes cardEnter{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .card-anim{animation:cardEnter .32s ease;}
+  /* ---- intro ---- */
   .subtitle{color:var(--ink-soft); font-size:14px; margin:0 0 20px;}
-  label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--ink);}
+  label{display:block; font-size:13px; font-weight:600; margin-bottom:6px;}
   input[type=text], select{
-    width:100%;
-    padding:11px 12px;
-    border:1.5px solid var(--line);
-    border-radius:7px;
-    font-size:15px;
-    font-family:inherit;
-    background:var(--paper);
-    color:var(--ink);
-    margin-bottom:18px;
+    width:100%; padding:11px 12px; border:1.5px solid var(--line); border-radius:7px;
+    font-size:15px; font-family:inherit; background:var(--paper); color:var(--ink); margin-bottom:18px;
   }
-  input[type=text]:focus, select:focus{
-    outline:none;
-    border-color:var(--teal);
-  }
+  input[type=text]:focus, select:focus{outline:none; border-color:var(--teal);}
   .btn{
-    display:inline-block;
-    background:var(--teal);
-    color:#fff;
-    border:none;
-    padding:12px 22px;
-    border-radius:7px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    font-family:inherit;
-    width:100%;
+    display:inline-block; background:var(--teal); color:#fff; border:none;
+    padding:13px 22px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer;
+    font-family:inherit; width:100%; transition:background .15s, transform .1s;
   }
   .btn:hover{background:var(--teal-dark);}
+  .btn:active{transform:scale(0.98);}
   .btn:disabled{background:#B9C4C1; cursor:not-allowed;}
-  .btn.secondary{
-    background:transparent;
-    color:var(--teal-dark);
-    border:1.5px solid var(--teal);
-  }
-  .btn.secondary:hover{background:rgba(47,111,94,0.08);}
   .error-msg{color:var(--brick); font-size:13px; margin:-10px 0 14px; display:none;}
-  /* ---- Progress grid ---- */
-  .progress-row{
-    display:flex;
-    gap:4px;
-    margin-bottom:22px;
-    flex-wrap:wrap;
-  }
-  .cell{
-    flex:1 1 auto;
-    height:8px;
-    min-width:8px;
-    background:var(--line);
-    border-radius:2px;
-  }
-  .cell.done{background:var(--teal);}
-  .cell.current{background:var(--gold);}
-  .qmeta{
-    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size:12px;
-    color:var(--ink-soft);
-    margin-bottom:8px;
-  }
-  .qtext{
-    font-size:17px;
-    font-weight:600;
-    margin:0 0 18px;
-    line-height:1.45;
-  }
-  .options{display:flex; flex-direction:column; gap:10px; margin-bottom:22px;}
-  .option{
-    border:1.5px solid var(--line);
-    border-radius:8px;
-    padding:12px 14px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    cursor:pointer;
-    font-size:15px;
-    transition:border-color .12s, background .12s;
-  }
-  .option:hover{border-color:var(--teal);}
-  .option.selected{border-color:var(--teal); background:rgba(47,111,94,0.07);}
-  .option .letter{
-    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-weight:700;
-    font-size:13px;
-    color:var(--teal-dark);
-    background:rgba(47,111,94,0.12);
-    width:24px; height:24px;
-    border-radius:5px;
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0;
-  }
-  .nav-row{display:flex; gap:10px;}
-  /* ---- Result screen ---- */
-  .score-block{text-align:center; padding:10px 0 6px;}
-  .score-num{
-    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size:56px;
-    font-weight:700;
-    color:var(--teal-dark);
-    line-height:1;
-    margin-bottom:6px;
-  }
-  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:24px;}
-  .status-line{
-    font-size:13px;
-    text-align:center;
-    margin-top:14px;
-    color:var(--ink-soft);
-  }
-  .status-line.ok{color:var(--teal-dark);}
-  .status-line.fail{color:var(--brick);}
   .hidden{display:none !important;}
-  /* ---- Leaderboard ---- */
-  .board{
-    background:var(--card);
-    border:1.5px solid var(--ink);
-    border-radius:var(--radius);
-    padding:20px 22px;
-    margin-bottom:16px;
-  }
-  .board h2{
-    font-size:14px;
-    margin:0 0 4px;
-    font-weight:700;
-  }
-  .board .board-sub{
-    font-size:12px;
-    color:var(--ink-soft);
-    margin:0 0 14px;
-  }
-  .board-row{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:8px 0;
-    border-top:1px solid var(--line);
-    font-size:14px;
-  }
+  /* ---- leaderboard ---- */
+  .board{background:var(--card); border:1.5px solid var(--ink); border-radius:var(--radius); padding:20px 22px; margin-bottom:16px;}
+  .board h2{font-size:14px; margin:0 0 4px; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .board .board-sub{font-size:12px; color:var(--ink-soft); margin:0 0 14px;}
+  .board-row{display:flex; align-items:center; gap:12px; padding:8px 0; border-top:1px solid var(--line); font-size:14px;}
   .board-row:first-of-type{border-top:none;}
   .board-rank{
-    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-weight:700;
-    font-size:13px;
-    width:26px; height:26px;
-    border-radius:6px;
-    display:flex; align-items:center; justify-content:center;
-    background:rgba(47,111,94,0.12);
-    color:var(--teal-dark);
-    flex-shrink:0;
+    font-family:ui-monospace, monospace; font-weight:700; font-size:13px;
+    width:26px; height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+    background:var(--teal-tint); color:var(--teal-dark); flex-shrink:0;
   }
   .board-row:nth-child(1) .board-rank{background:var(--gold); color:#3a2e05;}
   .board-row:nth-child(2) .board-rank{background:#D9D4C4; color:var(--ink);}
@@ -222,24 +99,84 @@
   .board-name{flex:1; min-width:0;}
   .board-name .n{font-weight:600; display:block;}
   .board-name .k{font-size:12px; color:var(--ink-soft);}
-  .board-score{
-    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-    font-weight:700;
-    font-size:15px;
-    color:var(--teal-dark);
-    flex-shrink:0;
+  .board-score{font-family:ui-monospace, monospace; font-weight:700; font-size:15px; color:var(--teal-dark); flex-shrink:0;}
+  .board-empty{font-size:13px; color:var(--ink-soft); padding:6px 0;}
+  /* ---- progress ---- */
+  .progress-row{display:flex; gap:4px; margin-bottom:20px; flex-wrap:wrap;}
+  .cell{flex:1 1 auto; height:8px; min-width:6px; background:var(--line); border-radius:2px; transition:background .2s;}
+  .cell.done{background:var(--teal);}
+  .cell.current{background:var(--gold); animation:pulse 1.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.5;}}
+  .qmeta{
+    font-family:ui-monospace, monospace; font-size:12px; color:var(--ink-soft);
+    margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;
   }
-  .board-empty{
-    font-size:13px;
-    color:var(--ink-soft);
-    padding:6px 0;
+  .qtype-badge{
+    font-family:ui-monospace, monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em;
+    background:var(--gold-tint); color:#7a5f0f; padding:2px 8px; border-radius:20px; font-weight:700;
   }
-  footer{
-    text-align:center;
-    font-size:12px;
-    color:var(--ink-soft);
-    margin-top:20px;
+  .qtext{font-size:17px; font-weight:700; margin:0 0 18px; line-height:1.45;}
+  /* ---- MC options ---- */
+  .options{display:flex; flex-direction:column; gap:10px; margin-bottom:8px;}
+  .option{
+    border:1.5px solid var(--line); border-radius:9px; padding:12px 14px;
+    display:flex; align-items:center; gap:12px; cursor:pointer; font-size:15px;
+    transition:border-color .12s, background .12s, transform .08s;
   }
+  .option:hover{border-color:var(--teal); transform:translateX(2px);}
+  .option.selected{border-color:var(--teal); background:var(--teal-tint);}
+  .option .letter{
+    font-family:ui-monospace, monospace; font-weight:700; font-size:13px; color:var(--teal-dark);
+    background:var(--teal-tint); width:24px; height:24px; border-radius:6px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .option.selected .letter{background:var(--teal); color:#fff;}
+  /* ---- True/False ---- */
+  .tf-row{display:flex; gap:12px; margin-bottom:8px;}
+  .tf-btn{
+    flex:1; border:1.5px solid var(--line); border-radius:9px; padding:22px 10px;
+    display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer;
+    font-size:15px; font-weight:700; transition:border-color .12s, background .12s, transform .08s;
+  }
+  .tf-btn:hover{transform:translateY(-2px);}
+  .tf-btn.tf-true.selected{border-color:var(--teal); background:var(--teal-tint); color:var(--teal-dark);}
+  .tf-btn.tf-false.selected{border-color:var(--brick); background:var(--brick-tint); color:var(--brick);}
+  .tf-btn svg{width:28px; height:28px;}
+  /* ---- Matching ---- */
+  .match-hint{font-size:13px; color:var(--ink-soft); margin:-8px 0 16px;}
+  .match-wrap{display:flex; gap:14px; margin-bottom:8px;}
+  .match-col{flex:1; display:flex; flex-direction:column; gap:8px;}
+  .match-card{
+    border:1.5px solid var(--line); border-radius:8px; padding:10px 12px;
+    font-size:14px; display:flex; align-items:center; gap:8px; cursor:pointer;
+    transition:border-color .12s, background .12s, transform .08s; min-height:20px;
+  }
+  .match-card .m-badge{
+    font-family:ui-monospace, monospace; font-weight:700; font-size:12px; color:var(--teal-dark);
+    background:var(--teal-tint); width:20px; height:20px; border-radius:5px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .match-card.awaiting{border-color:var(--gold); background:var(--gold-tint);}
+  .match-card.paired{border-color:var(--teal); background:var(--teal-tint);}
+  .match-card.disabled{opacity:.45; cursor:default;}
+  .match-card .m-tag{
+    margin-left:auto; font-family:ui-monospace, monospace; font-size:11px; font-weight:700;
+    color:var(--teal-dark); background:#fff; border:1px solid var(--teal); padding:1px 6px; border-radius:10px;
+  }
+  .nav-row{display:flex; gap:10px; margin-top:14px;}
+  /* ---- result ---- */
+  .score-block{text-align:center; padding:6px 0 4px;}
+  .score-icon{margin-bottom:6px;}
+  .score-icon svg{width:56px; height:56px;}
+  .score-num{
+    font-family:ui-monospace, monospace; font-size:56px; font-weight:700; color:var(--teal-dark); line-height:1; margin-bottom:2px;
+  }
+  .score-tier{font-size:16px; font-weight:700; margin-bottom:4px;}
+  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:22px;}
+  .status-line{font-size:13px; text-align:center; margin-top:14px; color:var(--ink-soft);}
+  .status-line.ok{color:var(--teal-dark);}
+  .status-line.fail{color:var(--brick);}
+  footer{text-align:center; font-size:12px; color:var(--ink-soft); margin-top:20px;}
 </style>
 </head>
 <body>
@@ -250,18 +187,14 @@
     <span class="tag">Bab 1 · Pengelolaan Data</span>
   </div>
 
-  <!-- PAPAN RANKING -->
   <div class="board" id="board">
     <h2>Papan nilai</h2>
     <p class="board-sub">Peringkat siswa yang sudah mengerjakan, dari skor tertinggi.</p>
-    <div id="board-body">
-      <p class="board-empty">Memuat data...</p>
-    </div>
+    <div id="board-body"><p class="board-empty">Memuat data...</p></div>
   </div>
 
-  <!-- SCREEN 1: identitas -->
   <div class="card" id="screen-intro">
-    <p class="subtitle">Koding dan Kecerdasan Artifisial — Kelas VIII. Isi identitas untuk memulai kuis (20 soal pilihan ganda).</p>
+    <p class="subtitle">Koding dan Kecerdasan Artifisial — Kelas VIII. Kuis ini berisi soal pilihan ganda, benar/salah, dan mencocokkan. Isi identitas untuk memulai.</p>
     <label for="input-nama">Nama lengkap</label>
     <input type="text" id="input-nama" placeholder="Tulis nama lengkap kamu">
     <label for="input-kelas">Kelas</label>
@@ -275,22 +208,20 @@
     <button class="btn" id="btn-start">Mulai kuis</button>
   </div>
 
-  <!-- SCREEN 2: soal -->
   <div class="card hidden" id="screen-quiz">
     <div class="progress-row" id="progress-row"></div>
-    <div class="qmeta" id="q-meta">Soal 1 / 20</div>
-    <p class="qtext" id="q-text"></p>
-    <div class="options" id="q-options"></div>
+    <div id="q-slot"></div>
     <div class="nav-row">
       <button class="btn" id="btn-next" disabled>Lanjut</button>
     </div>
   </div>
 
-  <!-- SCREEN 3: hasil -->
   <div class="card hidden" id="screen-result">
     <div class="score-block">
+      <div class="score-icon" id="result-icon"></div>
       <div class="score-num" id="result-score">0</div>
-      <div class="score-sub" id="result-detail">0 dari 20 benar</div>
+      <div class="score-tier" id="result-tier"></div>
+      <div class="score-sub" id="result-detail"></div>
     </div>
     <p id="result-status" class="status-line">Mengirim hasil...</p>
   </div>
@@ -299,223 +230,362 @@
 </div>
 
 <script>
-/* =====================================================================
-   KONFIGURASI: Tempel URL Web App Google Apps Script di sini.
-   Lihat panduan setup untuk cara mendapatkan URL ini.
-   ===================================================================== */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2W6Ctu3pzpx-Jq7GT_rUxIcOTkorBZNcu-XCq8E9P1-yUrfxdiGeNnyn_EcEedZjPRw/exec";
 
 /* =====================================================================
-   BANK SOAL — Bab 1: Pengelolaan Data dan Informasi
+   BANK SOAL — campuran pilihan ganda, benar/salah, dan mencocokkan
    ===================================================================== */
-const QUESTIONS = [
-  {q:"Apa perbedaan mendasar antara data dan informasi?",
+const ITEMS = [
+  {type:"mc", q:"Apa perbedaan mendasar antara data dan informasi?",
    opts:["Data adalah hasil olahan, informasi adalah fakta mentah","Data adalah fakta mentah yang belum diolah, sedangkan informasi adalah hasil pengolahan data yang bermakna","Data dan informasi adalah istilah yang sama persis","Informasi hanya berupa angka, data hanya berupa teks"], correct:1},
-  {q:"Manakah yang merupakan contoh data (bukan informasi)?",
+
+  {type:"mc", q:"Manakah yang merupakan contoh data (bukan informasi)?",
    opts:["Angka-angka nilai ulangan siswa: 82, 75, 90","\u201cRata-rata nilai ulangan kelas adalah 82\u201d","\u201cSeluruh siswa di kelas ini lulus ulangan\u201d","\u201cPrestasi belajar kelas meningkat dibanding semester lalu\u201d"], correct:0},
-  {q:"Data yang berbentuk angka dan dapat dihitung disebut data...",
-   opts:["Kualitatif","Kuantitatif","Sekunder","Primer"], correct:1},
-  {q:"Data yang berbentuk kategori, sifat, atau deskripsi (misalnya warna, rasa, pendapat) disebut data...",
-   opts:["Kuantitatif","Kualitatif","Numerik","Statistik"], correct:1},
-  {q:"Data yang diperoleh langsung dari sumber pertama, misalnya hasil wawancara atau pengamatan sendiri, disebut data...",
-   opts:["Sekunder","Primer","Tersier","Digital"], correct:1},
-  {q:"Data yang diperoleh dari sumber yang sudah ada sebelumnya (misalnya buku, artikel, atau laporan orang lain) disebut data...",
-   opts:["Primer","Sekunder","Kualitatif","Observasi"], correct:1},
-  {q:"Tahap pertama dalam siklus pengolahan data (data processing cycle) adalah...",
+
+  {type:"tf", q:"Foto dan video yang diunggah ke media sosial termasuk contoh data terstruktur.", correct:false},
+
+  {type:"mc", q:"Tahap pertama dalam siklus pengolahan data (data processing cycle) adalah...",
    opts:["Output","Proses","Input","Penyimpanan"], correct:2},
-  {q:"Urutan yang tepat dalam siklus pengolahan data adalah...",
+
+  {type:"mc", q:"Urutan yang tepat dalam siklus pengolahan data adalah...",
    opts:["Proses \u2192 Input \u2192 Output","Input \u2192 Proses \u2192 Output","Output \u2192 Proses \u2192 Input","Input \u2192 Output \u2192 Proses"], correct:1},
-  {q:"Berikut ini adalah contoh metode pengumpulan data, kecuali...",
+
+  {type:"match", q:"Cocokkan istilah data dengan pengertiannya.",
+   pairs:[
+     {left:"Data Primer", right:"Data yang diperoleh langsung dari sumber pertama"},
+     {left:"Data Sekunder", right:"Data yang diperoleh dari sumber yang sudah ada sebelumnya"},
+     {left:"Data Kuantitatif", right:"Data berbentuk angka yang dapat dihitung"},
+     {left:"Data Kualitatif", right:"Data berbentuk kategori, sifat, atau deskripsi"}
+   ]},
+
+  {type:"mc", q:"Berikut ini adalah contoh metode pengumpulan data, kecuali...",
    opts:["Wawancara","Observasi","Kuesioner/angket","Menghitung nilai rata-rata dari data yang sudah ada"], correct:3},
-  {q:"Aplikasi berikut yang paling umum digunakan untuk mengelola data dalam bentuk tabel adalah...",
+
+  {type:"mc", q:"Aplikasi berikut yang paling umum digunakan untuk mengelola data dalam bentuk tabel adalah...",
    opts:["Google Slides","Google Sheets / Microsoft Excel","Google Meet","Aplikasi menggambar (Paint)"], correct:1},
-  {q:"Fungsi SUM pada aplikasi pengolah angka digunakan untuk...",
-   opts:["Mencari nilai tertinggi","Menjumlahkan sekumpulan data","Mengurutkan data","Menghapus data"], correct:1},
-  {q:"Fungsi AVERAGE pada aplikasi pengolah angka digunakan untuk...",
-   opts:["Menjumlahkan data","Mencari nilai rata-rata","Mencari nilai maksimum","Menghitung banyaknya data"], correct:1},
-  {q:"Diagram yang paling tepat digunakan untuk membandingkan jumlah antar kategori adalah...",
-   opts:["Diagram batang","Diagram lingkaran","Diagram garis","Diagram pohon"], correct:0},
-  {q:"Diagram yang paling tepat digunakan untuk menunjukkan perubahan data dari waktu ke waktu (tren) adalah...",
-   opts:["Diagram lingkaran","Diagram garis","Diagram batang","Tabel biasa"], correct:1},
-  {q:"Diagram lingkaran (pie chart) paling cocok digunakan untuk menampilkan...",
-   opts:["Tren perubahan dari waktu ke waktu","Perbandingan proporsi/persentase dari keseluruhan","Urutan langkah kerja","Data yang sangat banyak dan kompleks"], correct:1},
-  {q:"Data yang tersusun rapi dalam baris dan kolom, seperti pada tabel atau spreadsheet, disebut data...",
-   opts:["Tidak terstruktur","Terstruktur","Semi-digital","Acak"], correct:1},
-  {q:"Contoh data tidak terstruktur adalah...",
+
+  {type:"tf", q:"Diagram lingkaran (pie chart) paling cocok digunakan untuk menunjukkan tren perubahan data dari waktu ke waktu.", correct:false},
+
+  {type:"match", q:"Cocokkan fungsi spreadsheet dengan kegunaannya.",
+   pairs:[
+     {left:"SUM", right:"Menjumlahkan sekumpulan data"},
+     {left:"AVERAGE", right:"Mencari nilai rata-rata"},
+     {left:"MAX", right:"Mencari nilai tertinggi dari sekumpulan data"},
+     {left:"MIN", right:"Mencari nilai terendah dari sekumpulan data"}
+   ]},
+
+  {type:"mc", q:"Contoh data tidak terstruktur adalah...",
    opts:["Tabel nilai siswa di spreadsheet","Daftar nama dalam absensi","Foto, video, dan unggahan media sosial","Data pada database sekolah"], correct:2},
-  {q:"Salah satu alasan pentingnya menjaga keamanan dan privasi data pribadi adalah...",
-   opts:["Agar data terlihat lebih banyak","Untuk mencegah penyalahgunaan data oleh pihak yang tidak bertanggung jawab","Supaya data lebih cepat diolah","Agar ukuran file menjadi lebih kecil"], correct:1},
-  {q:"Ukuran pemusatan data yang diperoleh dengan menjumlahkan seluruh data lalu membaginya dengan banyaknya data disebut...",
+
+  {type:"tf", q:"Menjaga keamanan dan privasi data pribadi penting untuk mencegah penyalahgunaan oleh pihak yang tidak bertanggung jawab.", correct:true},
+
+  {type:"match", q:"Cocokkan jenis diagram/tabel dengan kegunaannya.",
+   pairs:[
+     {left:"Diagram batang", right:"Membandingkan jumlah antar kategori"},
+     {left:"Diagram garis", right:"Menunjukkan tren/perubahan data dari waktu ke waktu"},
+     {left:"Diagram lingkaran", right:"Menampilkan proporsi/persentase dari keseluruhan"},
+     {left:"Tabel", right:"Menyusun data secara rapi dalam baris dan kolom"}
+   ]},
+
+  {type:"mc", q:"Ukuran pemusatan data yang diperoleh dengan menjumlahkan seluruh data lalu membaginya dengan banyaknya data disebut...",
    opts:["Median","Modus","Mean (rata-rata)","Range"], correct:2},
-  {q:"Manfaat utama pengelolaan data yang baik dalam kehidupan sehari-hari adalah...",
+
+  {type:"mc", q:"Manfaat utama pengelolaan data yang baik dalam kehidupan sehari-hari adalah...",
    opts:["Membuat data menjadi lebih rumit","Membantu pengambilan keputusan menjadi lebih tepat dan berdasarkan fakta","Menghabiskan waktu lebih lama","Mengurangi jumlah informasi yang tersedia"], correct:1}
 ];
 
 /* =====================================================================
-   LOGIKA KUIS
+   ICONS (inline SVG, no external dependency)
+   ===================================================================== */
+const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+const ICON_CROSS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+const ICON_STAR = '<svg viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><polygon points="12,2 15,9 22,9.5 16.5,14 18.5,21 12,17 5.5,21 7.5,14 2,9.5 9,9"/></svg>';
+const ICON_MEDAL = '<svg viewBox="0 0 24 24" fill="none" stroke="var(--teal-dark)" stroke-width="1.8"><circle cx="12" cy="15" r="6" fill="var(--gold-tint)"/><path d="M9 4 L7 10 M15 4 L17 10" stroke-linecap="round"/><circle cx="12" cy="15" r="2.4" fill="var(--gold)" stroke="none"/></svg>';
+const ICON_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="var(--teal-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c3-1.2 6 0 8 1.5C14 5 17 3.8 20 5v13c-3-1.2-6 0-8 1.5C10 18 7 16.8 4 18Z"/><path d="M12 6.5v12"/></svg>';
+
+/* =====================================================================
+   STATE
    ===================================================================== */
 let student = {nama:"", kelas:""};
 let current = 0;
-let answers = new Array(QUESTIONS.length).fill(null);
+let answers = new Array(ITEMS.length).fill(null);
+let matchSelected = null; // left index currently awaiting a pair (for match type)
 
-/* ---- Papan ranking ---- */
+const screenIntro = document.getElementById('screen-intro');
+const screenQuiz = document.getElementById('screen-quiz');
+const screenResult = document.getElementById('screen-result');
+const qSlot = document.getElementById('q-slot');
+const nextBtn = document.getElementById('btn-next');
+
+/* ---- leaderboard ---- */
 function loadLeaderboard(){
   const body = document.getElementById('board-body');
-
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('PASTE_URL') !== -1){
     body.innerHTML = '<p class="board-empty">Papan nilai belum aktif (URL backend belum diisi).</p>';
     return;
   }
-
-  fetch(SCRIPT_URL, { method: 'GET' })
+  fetch(SCRIPT_URL, {method:'GET'})
     .then(res => res.json())
     .then(records => {
       if(!Array.isArray(records) || records.length === 0){
         body.innerHTML = '<p class="board-empty">Belum ada siswa yang mengerjakan.</p>';
         return;
       }
-      records.sort((a, b) => (b.skor - a.skor) || ((b.benar||0) - (a.benar||0)));
+      records.sort((a,b) => (b.skor - a.skor) || ((b.benar||0)-(a.benar||0)));
       body.innerHTML = '';
-      records.forEach((r, i) => {
+      records.forEach((r,i) => {
         const row = document.createElement('div');
         row.className = 'board-row';
-        row.innerHTML =
-          '<div class="board-rank">' + (i+1) + '</div>' +
-          '<div class="board-name"><span class="n"></span><span class="k"></span></div>' +
-          '<div class="board-score">' + r.skor + '</div>';
+        row.innerHTML = '<div class="board-rank">'+(i+1)+'</div><div class="board-name"><span class="n"></span><span class="k"></span></div><div class="board-score">'+r.skor+'</div>';
         row.querySelector('.n').textContent = r.nama;
         row.querySelector('.k').textContent = r.kelas || '';
         body.appendChild(row);
       });
     })
-    .catch(() => {
-      body.innerHTML = '<p class="board-empty">Papan nilai tidak dapat dimuat saat ini.</p>';
-    });
+    .catch(() => { body.innerHTML = '<p class="board-empty">Papan nilai tidak dapat dimuat saat ini.</p>'; });
 }
 loadLeaderboard();
 
-const screenIntro = document.getElementById('screen-intro');
-const screenQuiz = document.getElementById('screen-quiz');
-const screenResult = document.getElementById('screen-result');
-
+/* ---- start ---- */
 document.getElementById('btn-start').addEventListener('click', () => {
   const nama = document.getElementById('input-nama').value.trim();
   const kelas = document.getElementById('input-kelas').value;
   const err = document.getElementById('intro-error');
-  if(!nama || !kelas){
-    err.style.display = 'block';
-    return;
-  }
+  if(!nama || !kelas){ err.style.display = 'block'; return; }
   err.style.display = 'none';
-  student.nama = nama;
-  student.kelas = kelas;
+  student.nama = nama; student.kelas = kelas;
   screenIntro.classList.add('hidden');
   screenQuiz.classList.remove('hidden');
   buildProgress();
-  renderQuestion();
+  renderItem();
 });
 
 function buildProgress(){
   const row = document.getElementById('progress-row');
   row.innerHTML = '';
-  QUESTIONS.forEach((_, i) => {
+  ITEMS.forEach((_,i) => {
     const c = document.createElement('div');
     c.className = 'cell';
-    c.dataset.idx = i;
     row.appendChild(c);
   });
 }
-
 function updateProgress(){
-  document.querySelectorAll('#progress-row .cell').forEach((c, i) => {
+  document.querySelectorAll('#progress-row .cell').forEach((c,i) => {
     c.classList.remove('done','current');
     if(i < current) c.classList.add('done');
     else if(i === current) c.classList.add('current');
   });
 }
 
-function renderQuestion(){
-  const item = QUESTIONS[current];
-  document.getElementById('q-meta').textContent = 'Soal ' + (current+1) + ' / ' + QUESTIONS.length;
-  document.getElementById('q-text').textContent = item.q;
-  const optWrap = document.getElementById('q-options');
-  optWrap.innerHTML = '';
+/* ---- render dispatch ---- */
+function renderItem(){
+  const item = ITEMS[current];
+  updateProgress();
+  matchSelected = null;
+
+  const typeLabel = {mc:'Pilihan ganda', tf:'Benar / Salah', match:'Mencocokkan'}[item.type];
+  let html = '<div class="qmeta"><span>Soal ' + (current+1) + ' / ' + ITEMS.length + '</span><span class="qtype-badge">' + typeLabel + '</span></div>';
+  html += '<p class="qtext">' + item.q + '</p>';
+
+  if(item.type === 'mc'){
+    html += '<div class="options" id="opt-wrap"></div>';
+  } else if(item.type === 'tf'){
+    html += '<div class="tf-row" id="tf-wrap"></div>';
+  } else if(item.type === 'match'){
+    html += '<p class="match-hint">Ketuk salah satu item di kiri, lalu ketuk pasangannya di kanan.</p>';
+    html += '<div class="match-wrap"><div class="match-col" id="match-left"></div><div class="match-col" id="match-right"></div></div>';
+  }
+
+  qSlot.innerHTML = html;
+  qSlot.classList.remove('card-anim'); void qSlot.offsetWidth; qSlot.classList.add('card-anim');
+
+  if(item.type === 'mc') renderMC(item);
+  else if(item.type === 'tf') renderTF(item);
+  else if(item.type === 'match') renderMatch(item);
+
+  updateNextButton();
+}
+
+function updateNextButton(){
+  const item = ITEMS[current];
+  let ready = false;
+  if(item.type === 'mc' || item.type === 'tf'){
+    ready = answers[current] !== null;
+  } else if(item.type === 'match'){
+    const a = answers[current];
+    ready = a && a.every(v => v !== null);
+  }
+  nextBtn.disabled = !ready;
+  nextBtn.textContent = (current === ITEMS.length - 1) ? 'Selesai & kirim' : 'Lanjut';
+}
+
+/* ---- MC ---- */
+function renderMC(item){
+  const wrap = document.getElementById('opt-wrap');
   const letters = ['A','B','C','D'];
-  item.opts.forEach((optText, i) => {
+  wrap.innerHTML = '';
+  item.opts.forEach((optText,i) => {
     const div = document.createElement('div');
     div.className = 'option' + (answers[current] === i ? ' selected' : '');
-    div.innerHTML = '<span class="letter">' + letters[i] + '</span><span>' + optText + '</span>';
-    div.addEventListener('click', () => selectOption(i));
-    optWrap.appendChild(div);
+    div.innerHTML = '<span class="letter">'+letters[i]+'</span><span>'+optText+'</span>';
+    div.addEventListener('click', () => { answers[current] = i; renderItem(); });
+    wrap.appendChild(div);
   });
-  updateProgress();
-  const nextBtn = document.getElementById('btn-next');
-  nextBtn.disabled = answers[current] === null;
-  nextBtn.textContent = (current === QUESTIONS.length - 1) ? 'Selesai & kirim' : 'Lanjut';
 }
 
-function selectOption(i){
-  answers[current] = i;
-  renderQuestion();
+/* ---- TF ---- */
+function renderTF(item){
+  const wrap = document.getElementById('tf-wrap');
+  wrap.innerHTML = '';
+  const trueBtn = document.createElement('div');
+  trueBtn.className = 'tf-btn tf-true' + (answers[current] === true ? ' selected' : '');
+  trueBtn.innerHTML = ICON_CHECK + '<span>Benar</span>';
+  trueBtn.addEventListener('click', () => { answers[current] = true; renderItem(); });
+  const falseBtn = document.createElement('div');
+  falseBtn.className = 'tf-btn tf-false' + (answers[current] === false ? ' selected' : '');
+  falseBtn.innerHTML = ICON_CROSS + '<span>Salah</span>';
+  falseBtn.addEventListener('click', () => { answers[current] = false; renderItem(); });
+  wrap.appendChild(trueBtn); wrap.appendChild(falseBtn);
 }
 
-document.getElementById('btn-next').addEventListener('click', () => {
-  if(answers[current] === null) return;
-  if(current < QUESTIONS.length - 1){
-    current++;
-    renderQuestion();
-  } else {
-    finishQuiz();
+/* ---- Matching ---- */
+function getShuffledRight(item){
+  if(!item._shuffled){
+    let idxs = item.pairs.map((_,i) => i);
+    for(let i = idxs.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+    }
+    item._shuffled = idxs;
   }
+  return item._shuffled;
+}
+
+function renderMatch(item){
+  if(!answers[current]) answers[current] = new Array(item.pairs.length).fill(null);
+  const a = answers[current];
+  const shuffled = getShuffledRight(item);
+  const letters = ['A','B','C','D','E','F'];
+
+  const leftWrap = document.getElementById('match-left');
+  const rightWrap = document.getElementById('match-right');
+  leftWrap.innerHTML = ''; rightWrap.innerHTML = '';
+
+  item.pairs.forEach((pair, i) => {
+    const card = document.createElement('div');
+    let cls = 'match-card';
+    if(a[i] !== null) cls += ' paired';
+    else if(matchSelected === i) cls += ' awaiting';
+    card.className = cls;
+    let tag = '';
+    if(a[i] !== null){
+      const rightPos = shuffled.indexOf(a[i]) + 1;
+      tag = '<span class="m-tag">'+rightPos+'</span>';
+    }
+    card.innerHTML = '<span class="m-badge">'+letters[i]+'</span><span>'+pair.left+'</span>'+tag;
+    card.addEventListener('click', () => {
+      if(a[i] !== null){ a[i] = null; matchSelected = i; }
+      else { matchSelected = i; }
+      renderMatchOnly(item);
+    });
+    leftWrap.appendChild(card);
+  });
+
+  shuffled.forEach((origIdx, pos) => {
+    const isUsed = a.includes(origIdx);
+    const card = document.createElement('div');
+    let cls = 'match-card' + (isUsed ? ' disabled paired' : '');
+    card.className = cls;
+    card.innerHTML = '<span class="m-badge">'+(pos+1)+'</span><span>'+item.pairs[origIdx].right+'</span>';
+    if(!isUsed){
+      card.addEventListener('click', () => {
+        if(matchSelected === null) return;
+        a[matchSelected] = origIdx;
+        matchSelected = null;
+        renderMatchOnly(item);
+      });
+    }
+    rightWrap.appendChild(card);
+  });
+
+  updateNextButton();
+}
+
+function renderMatchOnly(item){
+  renderMatch(item);
+}
+
+/* ---- navigation ---- */
+nextBtn.addEventListener('click', () => {
+  if(nextBtn.disabled) return;
+  if(current < ITEMS.length - 1){ current++; renderItem(); }
+  else finishQuiz();
 });
 
+/* ---- scoring ---- */
 function finishQuiz(){
-  let benar = 0;
-  QUESTIONS.forEach((item, i) => { if(answers[i] === item.correct) benar++; });
-  const total = QUESTIONS.length;
-  const skor = Math.round((benar/total) * 100);
+  let correctPoints = 0, totalPoints = 0;
+  ITEMS.forEach((item, idx) => {
+    if(item.type === 'match'){
+      totalPoints += item.pairs.length;
+      const a = answers[idx] || [];
+      item.pairs.forEach((_, i) => { if(a[i] === i) correctPoints++; });
+    } else {
+      totalPoints += 1;
+      if(answers[idx] === item.correct) correctPoints++;
+    }
+  });
+  const skor = Math.round((correctPoints/totalPoints) * 100);
 
   screenQuiz.classList.add('hidden');
   screenResult.classList.remove('hidden');
-  document.getElementById('result-score').textContent = skor;
-  document.getElementById('result-detail').textContent = benar + ' dari ' + total + ' jawaban benar \u2014 ' + student.nama + ' (' + student.kelas + ')';
 
-  sendResult({
-    nama: student.nama,
-    kelas: student.kelas,
-    skor: skor,
-    benar: benar,
-    total: total
-  });
+  let tier, icon;
+  if(skor >= 90){ tier = 'Luar biasa!'; icon = ICON_MEDAL; }
+  else if(skor >= 75){ tier = 'Keren, mantap!'; icon = ICON_STAR; }
+  else if(skor >= 60){ tier = 'Lumayan, terus belajar!'; icon = ICON_STAR; }
+  else { tier = 'Yuk pelajari lagi materinya!'; icon = ICON_BOOK; }
+
+  document.getElementById('result-icon').innerHTML = icon;
+  document.getElementById('result-tier').textContent = tier;
+  document.getElementById('result-detail').textContent = correctPoints + ' dari ' + totalPoints + ' poin benar \u2014 ' + student.nama + ' (' + student.kelas + ')';
+  animateScore(skor);
+
+  sendResult({nama: student.nama, kelas: student.kelas, skor: skor, benar: correctPoints, total: totalPoints});
+}
+
+function animateScore(target){
+  const el = document.getElementById('result-score');
+  let cur = 0;
+  const step = Math.max(1, Math.round(target/24));
+  const t = setInterval(() => {
+    cur += step;
+    if(cur >= target){ cur = target; clearInterval(t); }
+    el.textContent = cur;
+  }, 20);
 }
 
 function sendResult(payload){
   const statusEl = document.getElementById('result-status');
-
   if(!SCRIPT_URL || SCRIPT_URL.indexOf('PASTE_URL') !== -1){
-    statusEl.textContent = 'Catatan untuk guru: URL Google Apps Script belum diisi, jadi hasil ini belum tersimpan otomatis ke Google Sheet. Silakan lihat panduan setup.';
+    statusEl.textContent = 'Catatan untuk guru: URL Google Apps Script belum diisi, jadi hasil ini belum tersimpan otomatis ke Google Sheet.';
     statusEl.className = 'status-line fail';
     return;
   }
-
   statusEl.textContent = 'Mengirim hasil ke guru...';
   statusEl.className = 'status-line';
-
   const body = new URLSearchParams();
   Object.keys(payload).forEach(k => body.append(k, payload[k]));
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: body
-  }).then(() => {
-    statusEl.textContent = 'Hasil berhasil dikirim. Kamu boleh menutup halaman ini.';
-    statusEl.className = 'status-line ok';
-    setTimeout(loadLeaderboard, 1500);
-  }).catch(() => {
-    statusEl.textContent = 'Gagal mengirim hasil. Periksa koneksi internet, lalu coba muat ulang dan kerjakan kembali, atau laporkan skor ke guru secara manual.';
-    statusEl.className = 'status-line fail';
-  });
+  fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', body: body})
+    .then(() => {
+      statusEl.textContent = 'Hasil berhasil dikirim. Kamu boleh menutup halaman ini.';
+      statusEl.className = 'status-line ok';
+      setTimeout(loadLeaderboard, 1500);
+    })
+    .catch(() => {
+      statusEl.textContent = 'Gagal mengirim hasil. Periksa koneksi internet, lalu laporkan skor ke guru secara manual.';
+      statusEl.className = 'status-line fail';
+    });
 }
 </script>
 </body>
