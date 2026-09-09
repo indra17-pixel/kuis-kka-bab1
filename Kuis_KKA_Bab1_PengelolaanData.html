@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis KKA · Pengelolaan Data dan Informasi</title>
+<style>
+  :root{
+    --paper:#F6F5EF;
+    --ink:#17262B;
+    --ink-soft:#4A5A5E;
+    --line:#D8D4C8;
+    --teal:#2F6F5E;
+    --teal-dark:#1F4C40;
+    --gold:#C9A227;
+    --brick:#B4423F;
+    --card:#FFFFFF;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:32px 16px 64px;
+    line-height:1.5;
+  }
+  .wrap{width:100%;max-width:620px;}
+  .masthead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--ink);
+  }
+  .masthead h1{
+    font-size:19px;
+    margin:0;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .masthead .tag{
+    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size:12px;
+    color:var(--teal-dark);
+    background:rgba(47,111,94,0.1);
+    padding:3px 8px;
+    border-radius:4px;
+    white-space:nowrap;
+  }
+  .card{
+    background:var(--card);
+    border:1.5px solid var(--ink);
+    border-radius:var(--radius);
+    padding:28px 26px;
+  }
+  /* ---- Intro / identity form ---- */
+  .subtitle{color:var(--ink-soft); font-size:14px; margin:0 0 20px;}
+  label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--ink);}
+  input[type=text], select{
+    width:100%;
+    padding:11px 12px;
+    border:1.5px solid var(--line);
+    border-radius:7px;
+    font-size:15px;
+    font-family:inherit;
+    background:var(--paper);
+    color:var(--ink);
+    margin-bottom:18px;
+  }
+  input[type=text]:focus, select:focus{
+    outline:none;
+    border-color:var(--teal);
+  }
+  .btn{
+    display:inline-block;
+    background:var(--teal);
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:7px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:inherit;
+    width:100%;
+  }
+  .btn:hover{background:var(--teal-dark);}
+  .btn:disabled{background:#B9C4C1; cursor:not-allowed;}
+  .btn.secondary{
+    background:transparent;
+    color:var(--teal-dark);
+    border:1.5px solid var(--teal);
+  }
+  .btn.secondary:hover{background:rgba(47,111,94,0.08);}
+  .error-msg{color:var(--brick); font-size:13px; margin:-10px 0 14px; display:none;}
+  /* ---- Progress grid ---- */
+  .progress-row{
+    display:flex;
+    gap:4px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .cell{
+    flex:1 1 auto;
+    height:8px;
+    min-width:8px;
+    background:var(--line);
+    border-radius:2px;
+  }
+  .cell.done{background:var(--teal);}
+  .cell.current{background:var(--gold);}
+  .qmeta{
+    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .qtext{
+    font-size:17px;
+    font-weight:600;
+    margin:0 0 18px;
+    line-height:1.45;
+  }
+  .options{display:flex; flex-direction:column; gap:10px; margin-bottom:22px;}
+  .option{
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    font-size:15px;
+    transition:border-color .12s, background .12s;
+  }
+  .option:hover{border-color:var(--teal);}
+  .option.selected{border-color:var(--teal); background:rgba(47,111,94,0.07);}
+  .option .letter{
+    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-weight:700;
+    font-size:13px;
+    color:var(--teal-dark);
+    background:rgba(47,111,94,0.12);
+    width:24px; height:24px;
+    border-radius:5px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .nav-row{display:flex; gap:10px;}
+  /* ---- Result screen ---- */
+  .score-block{text-align:center; padding:10px 0 6px;}
+  .score-num{
+    font-family:ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size:56px;
+    font-weight:700;
+    color:var(--teal-dark);
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .score-sub{color:var(--ink-soft); font-size:14px; margin-bottom:24px;}
+  .status-line{
+    font-size:13px;
+    text-align:center;
+    margin-top:14px;
+    color:var(--ink-soft);
+  }
+  .status-line.ok{color:var(--teal-dark);}
+  .status-line.fail{color:var(--brick);}
+  .hidden{display:none !important;}
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <h1>Kuis KKA</h1>
+    <span class="tag">Bab 1 · Pengelolaan Data</span>
+  </div>
+
+  <!-- SCREEN 1: identitas -->
+  <div class="card" id="screen-intro">
+    <p class="subtitle">Koding dan Kecerdasan Artifisial — Kelas VIII. Isi identitas untuk memulai kuis (20 soal pilihan ganda).</p>
+    <label for="input-nama">Nama lengkap</label>
+    <input type="text" id="input-nama" placeholder="Tulis nama lengkap kamu">
+    <label for="input-kelas">Kelas</label>
+    <select id="input-kelas">
+      <option value="">Pilih kelas</option>
+      <option value="VIII A">VIII A</option>
+      <option value="VIII B">VIII B</option>
+      <option value="VIII C">VIII C</option>
+    </select>
+    <p class="error-msg" id="intro-error">Isi nama dan pilih kelas terlebih dahulu ya.</p>
+    <button class="btn" id="btn-start">Mulai kuis</button>
+  </div>
+
+  <!-- SCREEN 2: soal -->
+  <div class="card hidden" id="screen-quiz">
+    <div class="progress-row" id="progress-row"></div>
+    <div class="qmeta" id="q-meta">Soal 1 / 20</div>
+    <p class="qtext" id="q-text"></p>
+    <div class="options" id="q-options"></div>
+    <div class="nav-row">
+      <button class="btn" id="btn-next" disabled>Lanjut</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: hasil -->
+  <div class="card hidden" id="screen-result">
+    <div class="score-block">
+      <div class="score-num" id="result-score">0</div>
+      <div class="score-sub" id="result-detail">0 dari 20 benar</div>
+    </div>
+    <p id="result-status" class="status-line">Mengirim hasil...</p>
+  </div>
+
+  <footer>SMP Negeri 2 Saketi · Kuis daring KKA</footer>
+</div>
+
+<script>
+/* =====================================================================
+   KONFIGURASI: Tempel URL Web App Google Apps Script di sini.
+   Lihat panduan setup untuk cara mendapatkan URL ini.
+   ===================================================================== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2W6Ctu3pzpx-Jq7GT_rUxIcOTkorBZNcu-XCq8E9P1-yUrfxdiGeNnyn_EcEedZjPRw/exec";
+
+/* =====================================================================
+   BANK SOAL — Bab 1: Pengelolaan Data dan Informasi
+   ===================================================================== */
+const QUESTIONS = [
+  {q:"Apa perbedaan mendasar antara data dan informasi?",
+   opts:["Data adalah hasil olahan, informasi adalah fakta mentah","Data adalah fakta mentah yang belum diolah, sedangkan informasi adalah hasil pengolahan data yang bermakna","Data dan informasi adalah istilah yang sama persis","Informasi hanya berupa angka, data hanya berupa teks"], correct:1},
+  {q:"Manakah yang merupakan contoh data (bukan informasi)?",
+   opts:["Angka-angka nilai ulangan siswa: 82, 75, 90","\u201cRata-rata nilai ulangan kelas adalah 82\u201d","\u201cSeluruh siswa di kelas ini lulus ulangan\u201d","\u201cPrestasi belajar kelas meningkat dibanding semester lalu\u201d"], correct:0},
+  {q:"Data yang berbentuk angka dan dapat dihitung disebut data...",
+   opts:["Kualitatif","Kuantitatif","Sekunder","Primer"], correct:1},
+  {q:"Data yang berbentuk kategori, sifat, atau deskripsi (misalnya warna, rasa, pendapat) disebut data...",
+   opts:["Kuantitatif","Kualitatif","Numerik","Statistik"], correct:1},
+  {q:"Data yang diperoleh langsung dari sumber pertama, misalnya hasil wawancara atau pengamatan sendiri, disebut data...",
+   opts:["Sekunder","Primer","Tersier","Digital"], correct:1},
+  {q:"Data yang diperoleh dari sumber yang sudah ada sebelumnya (misalnya buku, artikel, atau laporan orang lain) disebut data...",
+   opts:["Primer","Sekunder","Kualitatif","Observasi"], correct:1},
+  {q:"Tahap pertama dalam siklus pengolahan data (data processing cycle) adalah...",
+   opts:["Output","Proses","Input","Penyimpanan"], correct:2},
+  {q:"Urutan yang tepat dalam siklus pengolahan data adalah...",
+   opts:["Proses \u2192 Input \u2192 Output","Input \u2192 Proses \u2192 Output","Output \u2192 Proses \u2192 Input","Input \u2192 Output \u2192 Proses"], correct:1},
+  {q:"Berikut ini adalah contoh metode pengumpulan data, kecuali...",
+   opts:["Wawancara","Observasi","Kuesioner/angket","Menghitung nilai rata-rata dari data yang sudah ada"], correct:3},
+  {q:"Aplikasi berikut yang paling umum digunakan untuk mengelola data dalam bentuk tabel adalah...",
+   opts:["Google Slides","Google Sheets / Microsoft Excel","Google Meet","Aplikasi menggambar (Paint)"], correct:1},
+  {q:"Fungsi SUM pada aplikasi pengolah angka digunakan untuk...",
+   opts:["Mencari nilai tertinggi","Menjumlahkan sekumpulan data","Mengurutkan data","Menghapus data"], correct:1},
+  {q:"Fungsi AVERAGE pada aplikasi pengolah angka digunakan untuk...",
+   opts:["Menjumlahkan data","Mencari nilai rata-rata","Mencari nilai maksimum","Menghitung banyaknya data"], correct:1},
+  {q:"Diagram yang paling tepat digunakan untuk membandingkan jumlah antar kategori adalah...",
+   opts:["Diagram batang","Diagram lingkaran","Diagram garis","Diagram pohon"], correct:0},
+  {q:"Diagram yang paling tepat digunakan untuk menunjukkan perubahan data dari waktu ke waktu (tren) adalah...",
+   opts:["Diagram lingkaran","Diagram garis","Diagram batang","Tabel biasa"], correct:1},
+  {q:"Diagram lingkaran (pie chart) paling cocok digunakan untuk menampilkan...",
+   opts:["Tren perubahan dari waktu ke waktu","Perbandingan proporsi/persentase dari keseluruhan","Urutan langkah kerja","Data yang sangat banyak dan kompleks"], correct:1},
+  {q:"Data yang tersusun rapi dalam baris dan kolom, seperti pada tabel atau spreadsheet, disebut data...",
+   opts:["Tidak terstruktur","Terstruktur","Semi-digital","Acak"], correct:1},
+  {q:"Contoh data tidak terstruktur adalah...",
+   opts:["Tabel nilai siswa di spreadsheet","Daftar nama dalam absensi","Foto, video, dan unggahan media sosial","Data pada database sekolah"], correct:2},
+  {q:"Salah satu alasan pentingnya menjaga keamanan dan privasi data pribadi adalah...",
+   opts:["Agar data terlihat lebih banyak","Untuk mencegah penyalahgunaan data oleh pihak yang tidak bertanggung jawab","Supaya data lebih cepat diolah","Agar ukuran file menjadi lebih kecil"], correct:1},
+  {q:"Ukuran pemusatan data yang diperoleh dengan menjumlahkan seluruh data lalu membaginya dengan banyaknya data disebut...",
+   opts:["Median","Modus","Mean (rata-rata)","Range"], correct:2},
+  {q:"Manfaat utama pengelolaan data yang baik dalam kehidupan sehari-hari adalah...",
+   opts:["Membuat data menjadi lebih rumit","Membantu pengambilan keputusan menjadi lebih tepat dan berdasarkan fakta","Menghabiskan waktu lebih lama","Mengurangi jumlah informasi yang tersedia"], correct:1}
+];
+
+/* =====================================================================
+   LOGIKA KUIS
+   ===================================================================== */
+let student = {nama:"", kelas:""};
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+
+const screenIntro = document.getElementById('screen-intro');
+const screenQuiz = document.getElementById('screen-quiz');
+const screenResult = document.getElementById('screen-result');
+
+document.getElementById('btn-start').addEventListener('click', () => {
+  const nama = document.getElementById('input-nama').value.trim();
+  const kelas = document.getElementById('input-kelas').value;
+  const err = document.getElementById('intro-error');
+  if(!nama || !kelas){
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  student.nama = nama;
+  student.kelas = kelas;
+  screenIntro.classList.add('hidden');
+  screenQuiz.classList.remove('hidden');
+  buildProgress();
+  renderQuestion();
+});
+
+function buildProgress(){
+  const row = document.getElementById('progress-row');
+  row.innerHTML = '';
+  QUESTIONS.forEach((_, i) => {
+    const c = document.createElement('div');
+    c.className = 'cell';
+    c.dataset.idx = i;
+    row.appendChild(c);
+  });
+}
+
+function updateProgress(){
+  document.querySelectorAll('#progress-row .cell').forEach((c, i) => {
+    c.classList.remove('done','current');
+    if(i < current) c.classList.add('done');
+    else if(i === current) c.classList.add('current');
+  });
+}
+
+function renderQuestion(){
+  const item = QUESTIONS[current];
+  document.getElementById('q-meta').textContent = 'Soal ' + (current+1) + ' / ' + QUESTIONS.length;
+  document.getElementById('q-text').textContent = item.q;
+  const optWrap = document.getElementById('q-options');
+  optWrap.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  item.opts.forEach((optText, i) => {
+    const div = document.createElement('div');
+    div.className = 'option' + (answers[current] === i ? ' selected' : '');
+    div.innerHTML = '<span class="letter">' + letters[i] + '</span><span>' + optText + '</span>';
+    div.addEventListener('click', () => selectOption(i));
+    optWrap.appendChild(div);
+  });
+  updateProgress();
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.disabled = answers[current] === null;
+  nextBtn.textContent = (current === QUESTIONS.length - 1) ? 'Selesai & kirim' : 'Lanjut';
+}
+
+function selectOption(i){
+  answers[current] = i;
+  renderQuestion();
+}
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  if(answers[current] === null) return;
+  if(current < QUESTIONS.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    finishQuiz();
+  }
+});
+
+function finishQuiz(){
+  let benar = 0;
+  QUESTIONS.forEach((item, i) => { if(answers[i] === item.correct) benar++; });
+  const total = QUESTIONS.length;
+  const skor = Math.round((benar/total) * 100);
+
+  screenQuiz.classList.add('hidden');
+  screenResult.classList.remove('hidden');
+  document.getElementById('result-score').textContent = skor;
+  document.getElementById('result-detail').textContent = benar + ' dari ' + total + ' jawaban benar \u2014 ' + student.nama + ' (' + student.kelas + ')';
+
+  sendResult({
+    nama: student.nama,
+    kelas: student.kelas,
+    skor: skor,
+    benar: benar,
+    total: total
+  });
+}
+
+function sendResult(payload){
+  const statusEl = document.getElementById('result-status');
+
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('PASTE_URL') !== -1){
+    statusEl.textContent = 'Catatan untuk guru: URL Google Apps Script belum diisi, jadi hasil ini belum tersimpan otomatis ke Google Sheet. Silakan lihat panduan setup.';
+    statusEl.className = 'status-line fail';
+    return;
+  }
+
+  statusEl.textContent = 'Mengirim hasil ke guru...';
+  statusEl.className = 'status-line';
+
+  const body = new URLSearchParams();
+  Object.keys(payload).forEach(k => body.append(k, payload[k]));
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: body
+  }).then(() => {
+    statusEl.textContent = 'Hasil berhasil dikirim. Kamu boleh menutup halaman ini.';
+    statusEl.className = 'status-line ok';
+  }).catch(() => {
+    statusEl.textContent = 'Gagal mengirim hasil. Periksa koneksi internet, lalu coba muat ulang dan kerjakan kembali, atau laporkan skor ke guru secara manual.';
+    statusEl.className = 'status-line fail';
+  });
+}
+</script>
+</body>
+</html>
